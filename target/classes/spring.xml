@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	<bean id="car1" class="com.wantao.spring2.Car" p:name="宝马"></bean>
+	<!-- 使用p命名空间进行装配 -->
+	<bean id="person1" class="com.wantao.spring2.Person" p:name="万涛1"
+		p:age="20" p:car-ref="car1"></bean>
+	<!-- 使用自动装配: 1.byType 2.byName:被引用的id的值必须与属性值相同 -->
+	<bean id="person2" class="com.wantao.spring2.Person"
+		autowire="byType">
+	</bean>
+	<!--实例bean的继承 -->
+	<bean id="person3" parent="person1" p:name="万涛３"></bean>
+	<!-- 抽象bean的继承 -->
+	<bean id="abstractBean" class="com.wantao.spring2.Person"
+		abstract="true" p:name="万涛4" p:age="20" p:car-ref="car1"></bean>
+	<bean id="person4" parent="abstractBean"></bean>
+	<!-- 使用外部属性文件进行注入 1.设置<context:property-placeholder location="xxx.properties"/> 
+		2.建立属性配置文件xxx.properties -->
+	<context:property-placeholder
+		location="person5.properties" />
+	<bean id="person5" class="com.wantao.spring2.Person"
+		p:name="${name}" p:age="${age}" p:car-ref="car1"></bean>
+	<!--springEL -->
+	<bean id="person6" class="com.wantao.spring2.Person" p:name="万涛6"
+		p:age="#{person5.age+10}" p:car="#{car1}"></bean>
+	<!--bean的生命周期和后置处理器BeanPostProcessor -->
+	<bean id="myBeanPostProcessor"
+		class="com.wantao.spring2.MyBeanPostProcessor"></bean>
+	<bean id="person7" class="com.wantao.spring2.Person" p:name="万涛7"
+		p:age="20" p:car="#{person1.car}" init-method="a" destroy-method="b"></bean>
+	<!-- 静态工厂方法创建bean-->
+	<bean id="personFactory" class="com.wantao.spring2.PersonFactory"
+		factory-method="createPerson">
+		<constructor-arg value="万涛8" index="0"></constructor-arg>
+		<constructor-arg value="20" index="1"></constructor-arg>
+		<constructor-arg value="#{car1}" index="2"></constructor-arg>
+	</bean>
+	<!--工厂方法实例创建bean-->
+	<bean id="personFactory1" class="com.wantao.spring2.PersonFactory"></bean>
+	<bean id="person9" factory-bean="personFactory1" factory-method="createPerson1">
+	<constructor-arg value="万涛9"></constructor-arg>
+	<constructor-arg value="20"></constructor-arg>
+	<constructor-arg value="#{car1}"></constructor-arg>
+	</bean>
+	<!--FactoryBean创建bean-->
+	<bean id="person10" class="com.wantao.spring2.PersonFactoryBean"></bean>
+</beans>
