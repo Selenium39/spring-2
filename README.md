@@ -1,4 +1,3 @@
-                                           Spring-2
 
 ```
 1.自动装配:autowired:
@@ -54,3 +53,5 @@
          4.@Controller：表现层组件
     2.在配置文件中开启注解扫描<context componnet-scan=""></context>     
     注意:使用注解无需指定id属性，使用类首字母小写的类的全名作为id,如需指定@Component(value="id")```
+    
+    参考视频:https://ke.qq.com/course/280229
